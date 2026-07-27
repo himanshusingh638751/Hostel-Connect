@@ -1,0 +1,6 @@
+{
+  "name": "Hostel Connect",
+  "description": "Hostel community platform for junior-senior mentorship, Q&A discussions, notice board, and buy & sell marketplace.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
