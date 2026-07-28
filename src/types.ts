@@ -24,7 +24,6 @@ export type ItemCategory =
   | 'Calculators & Tech'
   | 'Lab Equipment & Coats'
   | 'Furniture & Mattress'
-  | 'Bicycles & Transport'
   | 'Room Decor & Electronics'
   | 'Sports Gear'
   | 'Other';

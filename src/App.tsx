@@ -19,6 +19,7 @@ import { AIMentorView } from './components/AIMentor/AIMentorView';
 import { ProfileView } from './components/Profile/ProfileView';
 import { NotificationDropdown } from './components/Notifications/NotificationDropdown';
 import { UserSwitcherModal } from './components/Auth/UserSwitcherModal';
+import { LoginView } from './components/Auth/LoginView';
 
 import {
   User,
@@ -49,17 +50,17 @@ import {
 export default function App() {
   // Persistence state
   const [allUsers, setAllUsers] = useState<User[]>(() => {
-    const saved = localStorage.getItem('hc_users');
+    const saved = localStorage.getItem('hc_users_v2');
     return saved ? JSON.parse(saved) : SAMPLE_USERS;
   });
 
-  const [currentUser, setCurrentUser] = useState<User>(() => {
-    const saved = localStorage.getItem('hc_current_user');
-    return saved ? JSON.parse(saved) : SAMPLE_USERS[1]; // Defaults to Junior Aarav Patel
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    const saved = localStorage.getItem('hc_current_user_v2');
+    return saved ? JSON.parse(saved) : null;
   });
 
   const [items, setItems] = useState<MarketplaceItem[]>(() => {
-    const saved = localStorage.getItem('hc_items');
+    const saved = localStorage.getItem('hc_items_v3');
     return saved ? JSON.parse(saved) : INITIAL_MARKETPLACE_ITEMS;
   });
 
@@ -123,9 +124,9 @@ export default function App() {
   const [showNotificationsDropdown, setShowNotificationsDropdown] = useState<boolean>(false);
 
   // Sync state changes to localStorage
-  useEffect(() => { localStorage.setItem('hc_users', JSON.stringify(allUsers)); }, [allUsers]);
-  useEffect(() => { localStorage.setItem('hc_current_user', JSON.stringify(currentUser)); }, [currentUser]);
-  useEffect(() => { localStorage.setItem('hc_items', JSON.stringify(items)); }, [items]);
+  useEffect(() => { localStorage.setItem('hc_users_v2', JSON.stringify(allUsers)); }, [allUsers]);
+  useEffect(() => { localStorage.setItem('hc_current_user_v2', JSON.stringify(currentUser)); }, [currentUser]);
+  useEffect(() => { localStorage.setItem('hc_items_v3', JSON.stringify(items)); }, [items]);
   useEffect(() => { localStorage.setItem('hc_questions', JSON.stringify(questions)); }, [questions]);
   useEffect(() => { localStorage.setItem('hc_answers', JSON.stringify(answersMap)); }, [answersMap]);
   useEffect(() => { localStorage.setItem('hc_notices', JSON.stringify(notices)); }, [notices]);
@@ -439,6 +440,10 @@ export default function App() {
     setItems(prev => prev.map(item => item.id === itemId ? { ...item, status } : item));
   };
 
+  if (!currentUser) {
+    return <LoginView onLogin={setCurrentUser} />;
+  }
+
   // Derived calculations
   const wishlistItems = items.filter(i => wishlistIds.includes(i.id));
   const userListings = items.filter(i => i.sellerId === currentUser.id);
@@ -457,6 +462,7 @@ export default function App() {
         currentUser={currentUser}
         allUsers={allUsers}
         onSwitchUser={(user) => setCurrentUser(user)}
+        onLogout={() => setCurrentUser(null)}
         wishlistCount={wishlistIds.length}
         notifications={notifications}
         onOpenNotifications={() => setShowNotificationsDropdown(true)}
@@ -473,6 +479,7 @@ export default function App() {
 
       {/* Main Tab Bar */}
       <Navigation
+        userRole={currentUser.role}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         totalUnreadMessages={totalUnreadMessages}

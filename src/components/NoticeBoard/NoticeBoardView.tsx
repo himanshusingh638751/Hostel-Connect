@@ -102,7 +102,7 @@ export const NoticeBoardView: React.FC<NoticeBoardViewProps> = ({
     <div className="space-y-6">
 
       {/* Hero Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-950 via-slate-900 to-amber-900 border border-amber-500/20 p-6 sm:p-8 shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-50 via-white to-amber-100 border border-amber-200 p-6 sm:p-8 shadow-sm">
         <div className="relative z-10 max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-700 text-xs font-semibold">
             <BellRing className="w-3.5 h-3.5" />

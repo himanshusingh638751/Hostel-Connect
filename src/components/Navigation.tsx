@@ -17,6 +17,7 @@ interface NavigationProps {
   openQuestionsCount: number;
   availableItemsCount: number;
   pinnedNoticesCount: number;
+  userRole?: string;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
@@ -25,9 +26,12 @@ export const Navigation: React.FC<NavigationProps> = ({
   totalUnreadMessages,
   openQuestionsCount,
   availableItemsCount,
-  pinnedNoticesCount
+  pinnedNoticesCount,
+  userRole
 }) => {
-  const navItems = [
+  const isSenior = userRole === 'Senior' || userRole === 'Hostel Rep';
+
+  let navItems = [
     {
       id: 'marketplace',
       label: 'Buy & Sell Marketplace',
@@ -38,8 +42,8 @@ export const Navigation: React.FC<NavigationProps> = ({
     },
     {
       id: 'forum',
-      label: 'Q&A Forum & Mentorship',
-      shortLabel: 'Senior Q&A',
+      label: isSenior ? 'Mentorship & Q&A' : 'Q&A Forum & Mentorship',
+      shortLabel: isSenior ? 'Mentorship' : 'Senior Q&A',
       icon: MessageSquare,
       badge: openQuestionsCount > 0 ? `${openQuestionsCount} Threads` : null,
       badgeColor: 'bg-teal-500/20 text-teal-700 border-teal-500/30'
@@ -86,6 +90,11 @@ export const Navigation: React.FC<NavigationProps> = ({
     }
   ];
 
+  // Logic separation: Seniors do not need AI Mentor or Senior Contacts
+  if (isSenior) {
+    navItems = navItems.filter(item => item.id !== 'ai-mentor' && item.id !== 'seniors');
+  }
+
   return (
     <nav className="bg-white/95 border-b border-slate-200 backdrop-blur sticky top-16 z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -107,7 +116,6 @@ export const Navigation: React.FC<NavigationProps> = ({
                 <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-600' : 'text-slate-500'}`} />
                 <span className="hidden sm:inline">{item.label}</span>
                 <span className="sm:hidden">{item.shortLabel}</span>
-
                 {item.badge && (
                   <span
                     className={`ml-1 text-[10px] px-2 py-0.5 rounded-full border ${item.badgeColor}`}

@@ -19,6 +19,7 @@ interface HeaderProps {
   currentUser: User;
   allUsers: User[];
   onSwitchUser: (user: User) => void;
+  onLogout: () => void;
   wishlistCount: number;
   notifications: Notification[];
   onOpenNotifications: () => void;
@@ -40,6 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenCreateListing,
   onOpenCreateQuestion,
   onOpenUserSwitcher,
+  onLogout,
   searchQuery,
   setSearchQuery,
   activeTab
@@ -54,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
           
           {/* Logo & Platform Title */}
           <div className="flex items-center gap-3 shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-teal-400 flex items-center justify-center text-slate-900 font-bold shadow-lg shadow-indigo-600/20">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-teal-400 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-600/20">
               <Building2 className="w-6 h-6" />
             </div>
             <div>
@@ -78,7 +80,7 @@ export const Header: React.FC<HeaderProps> = ({
                 type="text"
                 placeholder={
                   activeTab === 'marketplace'
-                    ? "Search books, calculators, bicycles, lab equipment..."
+                    ? "Search books, calculators, lab equipment..."
                     : activeTab === 'forum'
                     ? "Search Q&A discussions, subjects, exam tips..."
                     : activeTab === 'notices'
@@ -132,7 +134,7 @@ export const Header: React.FC<HeaderProps> = ({
                     </span>
                     <div>
                       <div className="font-semibold text-slate-900">Sell Used Item</div>
-                      <div className="text-xs text-slate-500">Books, calculator, cycle, etc.</div>
+                      <div className="text-xs text-slate-500">Books, calculator, equipment, etc.</div>
                     </div>
                   </button>
 
@@ -195,20 +197,19 @@ export const Header: React.FC<HeaderProps> = ({
               <img
                 src={currentUser.avatar}
                 alt={currentUser.name}
-                className="w-8 h-8 rounded-full object-cover border border-slate-600 group-hover:border-indigo-600 transition-colors"
+                className="w-8 h-8 rounded-lg object-cover border border-slate-300 group-hover:scale-105 transition-transform"
               />
-              <div className="hidden lg:block text-xs">
-                <div className="font-semibold text-slate-800 flex items-center gap-1">
-                  {currentUser.name}
-                  {currentUser.verifiedStudent && (
-                    <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
-                  )}
-                </div>
-                <div className="text-[10px] text-slate-500">
-                  {currentUser.role} • {currentUser.hostelBlock}
-                </div>
+              <div className="hidden sm:block">
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider leading-none mb-0.5">Active Student</div>
+                <div className="text-xs font-bold text-slate-900 leading-none truncate max-w-[100px]">{currentUser.name}</div>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-800 ml-1 hidden sm:block" />
+            </button>
+            <button
+              onClick={onLogout}
+              className="flex items-center justify-center p-2 rounded-xl bg-slate-100/90 hover:bg-rose-100/90 hover:text-rose-600 text-slate-600 border border-slate-300 hover:border-rose-300 transition-all"
+              title="Logout"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             </button>
 
           </div>

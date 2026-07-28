@@ -16,7 +16,7 @@ export const SAMPLE_USERS: User[] = [
     id: 'usr_rohan',
     name: 'Rohan Sharma',
     email: 'rohan.s@hostel.edu',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+    avatar: '/images/senior_student_avatar.jpg',
     year: '4th Year (Senior)',
     role: 'Senior',
     hostelBlock: 'Block B4 (Boys)',
@@ -74,7 +74,7 @@ export const SAMPLE_USERS: User[] = [
     roomNumber: '412',
     department: 'Civil Engineering',
     phone: '+91 98112 23344',
-    bio: 'Cycling enthusiast & 4th year Civil senior. Moving out after graduation soon, selling bicycle, study lamp, and textbooks at heavy discounts!',
+    bio: '4th year Civil senior. Moving out after graduation soon, selling study lamp and textbooks at heavy discounts!',
     rating: 4.7,
     reviewCount: 15,
     verifiedStudent: true,
@@ -113,7 +113,7 @@ export const INITIAL_MARKETPLACE_ITEMS: MarketplaceItem[] = [
     condition: 'Like New',
     description: 'Used for only 1 semester during Engineering Mathematics & Statistics. Fully functional with solar panel, pristine display, original cover box included. Approved for all university examinations.',
     images: [
-      'https://images.unsplash.com/photo-1611125832047-1d7ad1e8e48e?auto=format&fit=crop&q=80&w=600',
+      '/images/scientific_calculator_new.jpg',
       'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&q=80&w=600'
     ],
     sellerId: 'usr_rohan',
@@ -163,26 +163,6 @@ export const INITIAL_MARKETPLACE_ITEMS: MarketplaceItem[] = [
     tags: ['DSA', 'Textbook', 'C++', 'Handwritten Notes'],
     viewsCount: 210,
     wishlistCount: 31
-  },
-  {
-    id: 'item_4',
-    title: 'Hero Sprint 21-Speed Gear Bicycle with Combination Lock & Front Light',
-    price: 3200,
-    originalPrice: 8500,
-    category: 'Bicycles & Transport',
-    condition: 'Good',
-    description: 'Great reliable bicycle for commuting between Hostel Block B3 and Academic Block. Newly replaced brake pads, smooth gear shifts, includes heavy steel lock & LED rechargeable headlight. Selling because moving out after final semester.',
-    images: [
-      'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&q=80&w=600',
-      'https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&q=80&w=600'
-    ],
-    sellerId: 'usr_vikram',
-    seller: SAMPLE_USERS[3],
-    createdAt: '1 day ago',
-    status: 'Available',
-    tags: ['Bicycle', 'Campus Commute', 'Gears', 'Moving Out'],
-    viewsCount: 340,
-    wishlistCount: 42
   },
   {
     id: 'item_5',

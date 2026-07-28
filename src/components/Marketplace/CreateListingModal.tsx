@@ -14,7 +14,6 @@ const CATEGORIES: ItemCategory[] = [
   'Calculators & Tech',
   'Lab Equipment & Coats',
   'Furniture & Mattress',
-  'Bicycles & Transport',
   'Room Decor & Electronics',
   'Sports Gear',
   'Other'
@@ -35,9 +34,6 @@ const STOCK_IMAGE_PRESETS: Record<ItemCategory, string[]> = {
   ],
   'Furniture & Mattress': [
     'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=600'
-  ],
-  'Bicycles & Transport': [
-    'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&q=80&w=600'
   ],
   'Room Decor & Electronics': [
     'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&q=80&w=600'

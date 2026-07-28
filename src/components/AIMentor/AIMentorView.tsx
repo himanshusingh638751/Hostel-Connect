@@ -26,7 +26,7 @@ const SUGGESTED_PROMPTS = [
   {
     icon: '🏷️',
     title: 'Marketplace Price Check',
-    prompt: 'What is a fair second-hand price for a Casio FX-991EX ClassWiz calculator and a 21-speed bicycle in hostel?'
+    prompt: 'What is a fair second-hand price for a Casio FX-991EX ClassWiz calculator and an engineering drawing board?'
   },
   {
     icon: '🔬',
@@ -44,7 +44,7 @@ export const AIMentorView: React.FC<AIMentorViewProps> = ({ currentUser }) => {
   const [messages, setMessages] = useState<Array<{ sender: 'user' | 'ai'; text: string; time: string }>>([
     {
       sender: 'ai',
-      text: `👋 **Hello ${currentUser.name}! I am your Hostel Connect AI Advisor.**\n\nI can assist you with:\n- **Academic & Exam Tips:** Syllabus weightage, mid-sem study roadmaps, and previous year paper strategies.\n- **Marketplace Fair Price Check:** Valuation estimates for used textbooks, lab coats, calculators, and bicycles.\n- **Hostel Life Hacks:** Gate rules, mess voting, library passes, and lab viva preparation.\n\nHow can I help you today?`,
+      text: `👋 **Hello ${currentUser.name}! I am your Hostel Connect AI Advisor.**\n\nI can assist you with:\n- **Academic & Exam Tips:** Syllabus weightage, mid-sem study roadmaps, and previous year paper strategies.\n- **Marketplace Fair Price Check:** Valuation estimates for used textbooks, lab coats, drawing boards, and calculators.\n- **Hostel Life Hacks:** Gate rules, mess voting, library passes, and lab viva preparation.\n\nHow can I help you today?`,
       time: 'Just now'
     }
   ]);

@@ -1,0 +1,33 @@
+--- src/App.tsx
++++ src/App.tsx
+@@ -16,6 +16,7 @@
+ import { ProfileView } from './components/Profile/ProfileView';
+ import { NotificationDropdown } from './components/Notifications/NotificationDropdown';
+ import { UserSwitcherModal } from './components/Auth/UserSwitcherModal';
++import { LoginView } from './components/Auth/LoginView';
+ import {
+   User,
+   MarketplaceItem,
+@@ -53,9 +54,9 @@
+     const saved = localStorage.getItem('hc_users');
+     return saved ? JSON.parse(saved) : SAMPLE_USERS;
+   });
+-  const [currentUser, setCurrentUser] = useState<User>(() => {
++  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+     const saved = localStorage.getItem('hc_current_user');
+-    return saved ? JSON.parse(saved) : SAMPLE_USERS[1]; // Defaults to Junior Aarav Patel
++    return saved ? JSON.parse(saved) : null;
+   });
+   const [items, setItems] = useState<MarketplaceItem[]>(() => {
+     const saved = localStorage.getItem('hc_items');
+@@ -439,6 +440,10 @@
+     setAllUsers(prev => prev.map(u => u.id === currentUser.id ? updatedUser : u));
+   };
+ 
++  if (!currentUser) {
++    return <LoginView onLogin={setCurrentUser} />;
++  }
++
+   // Derived calculations
+   const wishlistItems = items.filter(i => wishlistIds.includes(i.id));
+   const userListings = items.filter(i => i.sellerId === currentUser.id);

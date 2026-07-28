@@ -34,7 +34,6 @@ const CATEGORIES: ItemCategory[] = [
   'Calculators & Tech',
   'Lab Equipment & Coats',
   'Furniture & Mattress',
-  'Bicycles & Transport',
   'Room Decor & Electronics',
   'Sports Gear',
   'Other'
@@ -92,7 +91,7 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
     <div className="space-y-6">
 
       {/* Hero Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 border border-indigo-600/20 p-6 sm:p-8 shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-100 via-white to-slate-100 border border-indigo-200 p-6 sm:p-8 shadow-sm">
         <div className="absolute -right-10 -bottom-10 w-72 h-72 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-600/10 border border-indigo-600/20 text-indigo-600 text-xs font-semibold">
@@ -103,7 +102,7 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
             Buy Used College Gear at <span className="text-indigo-600">50% to 70% Off</span> Direct from Seniors
           </h1>
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-            Pass down lab coats, scientific calculators, bicycles, engineering drawing boards, and textbooks. Safe, fast cash deals right inside your hostel block!
+            Pass down lab coats, scientific calculators, engineering drawing boards, and textbooks. Safe, fast cash deals right inside your hostel block!
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-slate-600">
