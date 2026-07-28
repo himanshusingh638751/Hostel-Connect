@@ -123,6 +123,10 @@ export const SeniorsDirectoryView: React.FC<SeniorsDirectoryViewProps> = ({
                 <UserIcon className="w-3.5 h-3.5 text-indigo-600/70" />
                 <span className="truncate">{senior.department}</span>
               </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-3.5 h-3.5 text-indigo-600/70" />
+                <span className="truncate">{senior.email}</span>
+              </div>
               
               {/* Display latest testimonial if any */}
               {sReviews.length > 0 && (

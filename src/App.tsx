@@ -60,7 +60,7 @@ export default function App() {
   });
 
   const [items, setItems] = useState<MarketplaceItem[]>(() => {
-    const saved = localStorage.getItem('hc_items_v3');
+    const saved = localStorage.getItem('hc_items_v5');
     return saved ? JSON.parse(saved) : INITIAL_MARKETPLACE_ITEMS;
   });
 
@@ -112,6 +112,22 @@ export default function App() {
   // Navigation & Filter states
   const [activeTab, setActiveTab] = useState<string>('marketplace');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  
+  // Dark mode
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem('hc_dark_mode');
+    if (saved !== null) return JSON.parse(saved);
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('hc_dark_mode', JSON.stringify(isDarkMode));
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   // Modals state
   const [selectedItemForDetail, setSelectedItemForDetail] = useState<MarketplaceItem | null>(null);
@@ -126,7 +142,7 @@ export default function App() {
   // Sync state changes to localStorage
   useEffect(() => { localStorage.setItem('hc_users_v2', JSON.stringify(allUsers)); }, [allUsers]);
   useEffect(() => { localStorage.setItem('hc_current_user_v2', JSON.stringify(currentUser)); }, [currentUser]);
-  useEffect(() => { localStorage.setItem('hc_items_v3', JSON.stringify(items)); }, [items]);
+  useEffect(() => { localStorage.setItem('hc_items_v5', JSON.stringify(items)); }, [items]);
   useEffect(() => { localStorage.setItem('hc_questions', JSON.stringify(questions)); }, [questions]);
   useEffect(() => { localStorage.setItem('hc_answers', JSON.stringify(answersMap)); }, [answersMap]);
   useEffect(() => { localStorage.setItem('hc_notices', JSON.stringify(notices)); }, [notices]);
@@ -455,7 +471,7 @@ export default function App() {
   const pinnedNoticesCount = notices.filter(n => n.pinned).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-indigo-600 selection:text-white">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 flex flex-col font-sans selection:bg-indigo-600 selection:text-white">
       
       {/* Top Bar Header */}
       <Header
@@ -463,6 +479,8 @@ export default function App() {
         allUsers={allUsers}
         onSwitchUser={(user) => setCurrentUser(user)}
         onLogout={() => setCurrentUser(null)}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
         wishlistCount={wishlistIds.length}
         notifications={notifications}
         onOpenNotifications={() => setShowNotificationsDropdown(true)}

@@ -50,6 +50,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const [hostelBlock, setHostelBlock] = useState(currentUser.hostelBlock);
   const [roomNumber, setRoomNumber] = useState(currentUser.roomNumber);
   const [department, setDepartment] = useState(currentUser.department);
+  const [email, setEmail] = useState(currentUser.email);
   const [phone, setPhone] = useState(currentUser.phone);
   const [bio, setBio] = useState(currentUser.bio);
 
@@ -60,6 +61,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       hostelBlock,
       roomNumber,
       department,
+      email,
       phone,
       bio
     });
@@ -105,6 +107,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 </span>
                 <span className="flex items-center gap-1">
                   🎓 {currentUser.department}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Mail className="w-3.5 h-3.5" /> {currentUser.email}
                 </span>
                 <span className="flex items-center gap-1">
                   <Phone className="w-3.5 h-3.5" /> {currentUser.phone}
@@ -341,6 +346,11 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               <div>
                 <label className="font-bold text-slate-600">Department</label>
                 <input type="text" value={department} onChange={(e) => setDepartment(e.target.value)} className="w-full bg-slate-100 border border-slate-300 text-xs rounded-xl p-2.5 text-slate-900 mt-1" />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600">Email Address</label>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-slate-100 border border-slate-300 text-xs rounded-xl p-2.5 text-slate-900 mt-1" />
               </div>
 
               <div>

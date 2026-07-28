@@ -31,9 +31,10 @@ export function LoginView({ onLogin }: LoginViewProps) {
           <div className="flex items-center gap-2 mb-6">
             <button 
               onClick={() => setSelectedRole(null)}
-              className="p-2 -ml-2 rounded-xl hover:bg-slate-100 text-slate-500 transition-colors"
+              className="flex items-center gap-1.5 p-2 -ml-2 pr-3 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-slate-900 transition-colors font-semibold text-sm"
             >
               <ArrowLeft className="w-5 h-5" />
+              <span>Back</span>
             </button>
             <h2 className="text-lg font-extrabold text-slate-900 uppercase tracking-wider">
               Select {selectedRole} Account
@@ -55,10 +56,10 @@ export function LoginView({ onLogin }: LoginViewProps) {
                   />
                   <div>
                     <div className="font-bold text-base text-slate-900">{usr.name}</div>
-                    <div className="text-xs text-slate-500">{usr.email}</div>
                     <div className="text-[10px] text-indigo-600 font-bold mt-1 tracking-wide uppercase">
                       {usr.department} • {usr.hostelBlock}
                     </div>
+                    <div className="text-xs text-slate-500">{usr.email}</div>
                   </div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all" />
@@ -71,57 +72,54 @@ export function LoginView({ onLogin }: LoginViewProps) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
-      {/* Junior Section */}
-      <div className="flex-1 bg-teal-50/50 flex flex-col items-center justify-center p-8 md:p-12 relative overflow-hidden group border-b md:border-b-0 md:border-r border-slate-200">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-teal-100/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-        <div className="relative z-10 max-w-sm w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="w-20 h-20 rounded-3xl bg-teal-500 text-white flex items-center justify-center shadow-xl shadow-teal-500/20">
-            <UserCheck className="w-10 h-10" />
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+        
+        {/* Header */}
+        <div className="p-8 text-center border-b border-slate-100 bg-white">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-400 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-600/20 mb-4">
+            <Building2 className="w-8 h-8" />
           </div>
-          <div>
-            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Junior Gateway</h2>
-            <p className="text-slate-600 mt-3 text-sm leading-relaxed">
+          <h1 className="text-3xl font-extrabold text-slate-900">Hostel Connect</h1>
+          <p className="text-sm text-slate-500 mt-2">Choose your portal to continue</p>
+        </div>
+
+        <div className="flex flex-col md:flex-row">
+          {/* Junior Section */}
+          <div className="flex-1 bg-teal-50/30 hover:bg-teal-50/80 transition-colors p-8 relative group border-b md:border-b-0 md:border-r border-slate-100 flex flex-col">
+            <div className="w-16 h-16 rounded-2xl bg-teal-500 text-white flex items-center justify-center shadow-lg shadow-teal-500/20 mb-6">
+              <UserCheck className="w-8 h-8" />
+            </div>
+            <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight mb-2">Junior Gateway</h2>
+            <p className="text-slate-600 text-sm leading-relaxed mb-8 flex-1">
               Access the campus marketplace to buy second-hand essentials, ask questions in the forum, and connect with verified senior mentors.
             </p>
+            <button
+              onClick={() => handleRoleSelect('Junior')}
+              className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-between transition-all shadow-md shadow-teal-600/20 group-hover:-translate-y-0.5"
+            >
+              <span>Login as Junior</span>
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
-          <button
-            onClick={() => handleRoleSelect('Junior')}
-            className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-between transition-all shadow-lg shadow-teal-600/20 hover:shadow-xl hover:shadow-teal-600/30 hover:-translate-y-0.5"
-          >
-            <span>Login as Junior</span>
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
 
-      {/* Senior Section */}
-      <div className="flex-1 bg-indigo-50/50 flex flex-col items-center justify-center p-8 md:p-12 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-indigo-200/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-        <div className="relative z-10 max-w-sm w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="w-20 h-20 rounded-3xl bg-indigo-600 text-white flex items-center justify-center shadow-xl shadow-indigo-600/20">
-            <GraduationCap className="w-10 h-10" />
-          </div>
-          <div>
-            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Senior Portal</h2>
-            <p className="text-slate-600 mt-3 text-sm leading-relaxed">
+          {/* Senior Section */}
+          <div className="flex-1 bg-indigo-50/30 hover:bg-indigo-50/80 transition-colors p-8 relative group flex flex-col">
+            <div className="w-16 h-16 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-600/20 mb-6">
+              <GraduationCap className="w-8 h-8" />
+            </div>
+            <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight mb-2">Senior Portal</h2>
+            <p className="text-slate-600 text-sm leading-relaxed mb-8 flex-1">
               List your old textbooks and lab equipment for sale, mentor junior students, and share your academic experience on the forum.
             </p>
+            <button
+              onClick={() => handleRoleSelect('Senior')}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-between transition-all shadow-md shadow-indigo-600/20 group-hover:-translate-y-0.5"
+            >
+              <span>Login as Senior</span>
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
-          <button
-            onClick={() => handleRoleSelect('Senior')}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-between transition-all shadow-lg shadow-indigo-600/20 hover:shadow-xl hover:shadow-indigo-600/30 hover:-translate-y-0.5"
-          >
-            <span>Login as Senior</span>
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
-
-      {/* Brand Overlay Center */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex flex-col items-center pointer-events-none">
-        <div className="w-16 h-16 bg-white rounded-full shadow-2xl flex items-center justify-center border-4 border-slate-50">
-          <Building2 className="w-7 h-7 text-slate-800" />
         </div>
       </div>
     </div>

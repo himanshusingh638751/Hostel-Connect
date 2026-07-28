@@ -30,6 +30,7 @@ export const UserSwitcherModal: React.FC<UserSwitcherModalProps> = ({
   const [hostelBlock, setHostelBlock] = useState('Block B2 (Boys)');
   const [roomNumber, setRoomNumber] = useState('210');
   const [department, setDepartment] = useState('Computer Science');
+  const [email, setEmail] = useState('');
 
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +39,7 @@ export const UserSwitcherModal: React.FC<UserSwitcherModalProps> = ({
     const newUser: User = {
       id: `usr_${Date.now()}`,
       name: name.trim(),
-      email: `${name.toLowerCase().replace(/\s+/g, '.')}@hostel.edu`,
+      email: email.trim() || `${name.toLowerCase().replace(/\s+/g, '.')}@hostel.edu`,
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200',
       year,
       role,
@@ -113,6 +114,9 @@ export const UserSwitcherModal: React.FC<UserSwitcherModalProps> = ({
                         </div>
                         <div className="text-xs text-slate-500">
                           {usr.year} • {usr.department}
+                        </div>
+                        <div className="text-[10px] text-slate-500 font-medium">
+                          ✉️ {usr.email}
                         </div>
                         <div className="text-[10px] text-indigo-600 font-medium">
                           📍 {usr.hostelBlock}, Room {usr.roomNumber}
@@ -208,6 +212,17 @@ export const UserSwitcherModal: React.FC<UserSwitcherModalProps> = ({
                 type="text"
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
+                className="w-full bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-slate-900 mt-1"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-slate-600">Email Address (Optional)</label>
+              <input
+                type="email"
+                placeholder="Auto-generated if empty"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-slate-900 mt-1"
               />
             </div>

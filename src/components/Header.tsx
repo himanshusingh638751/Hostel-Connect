@@ -11,7 +11,9 @@ import {
   ShieldCheck,
   LogOut,
   SlidersHorizontal,
-  GraduationCap
+  GraduationCap,
+  Moon,
+  Sun
 } from 'lucide-react';
 import { User, Notification } from '../types';
 
@@ -30,6 +32,8 @@ interface HeaderProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   activeTab: string;
+  isDarkMode: boolean;
+  onToggleDarkMode: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -44,13 +48,15 @@ export const Header: React.FC<HeaderProps> = ({
   onLogout,
   searchQuery,
   setSearchQuery,
-  activeTab
+  activeTab,
+  isDarkMode,
+  onToggleDarkMode
 }) => {
   const unreadCount = notifications.filter(n => !n.read).length;
   const [showQuickActions, setShowQuickActions] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-slate-200 text-slate-900 shadow-md">
+    <header className="sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           
@@ -172,6 +178,15 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </button>
 
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={onToggleDarkMode}
+              className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-600 hover:text-indigo-600 border border-slate-300/70 transition-all dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 dark:border-slate-700"
+              title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+
             {/* Notifications Bell */}
             <button
               onClick={onOpenNotifications}
@@ -206,10 +221,11 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button
               onClick={onLogout}
-              className="flex items-center justify-center p-2 rounded-xl bg-slate-100/90 hover:bg-rose-100/90 hover:text-rose-600 text-slate-600 border border-slate-300 hover:border-rose-300 transition-all"
-              title="Logout"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100/90 hover:bg-slate-200/90 text-slate-700 font-semibold border border-slate-300 transition-all text-sm"
+              title="Back to Portal"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
+              <span className="hidden sm:inline">Back</span>
             </button>
 
           </div>

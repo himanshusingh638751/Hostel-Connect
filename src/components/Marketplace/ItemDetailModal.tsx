@@ -260,6 +260,9 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                   <p className="text-xs text-slate-500">
                     {item.seller.year} • {item.seller.department}
                   </p>
+                  <p className="text-xs text-slate-500 font-medium">
+                    ✉️ {item.seller.email}
+                  </p>
 
                   <div className="flex items-center gap-3 text-xs text-slate-600 font-medium">
                     <span className="text-indigo-600">

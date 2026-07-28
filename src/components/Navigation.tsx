@@ -96,7 +96,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   }
 
   return (
-    <nav className="bg-white/95 border-b border-slate-200 backdrop-blur sticky top-16 z-30">
+    <nav className="bg-white/95 dark:bg-slate-950/95 border-b border-slate-200 dark:border-slate-800 backdrop-blur sticky top-16 z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 no-scrollbar scroll-smooth">
           {navItems.map((item) => {
@@ -108,12 +108,12 @@ export const Navigation: React.FC<NavigationProps> = ({
                 onClick={() => setActiveTab(item.id)}
                 className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-150 shrink-0 ${
                   isActive
-                    ? 'bg-slate-100 text-indigo-600 border border-slate-300 shadow-sm font-semibold'
-                    : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100/50'
+                    ? 'bg-slate-100 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border border-slate-300 dark:border-slate-700 shadow-sm font-semibold'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100/50 dark:hover:bg-slate-800/50'
                 }`}
                 id={`tab-${item.id}`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-600' : 'text-slate-500'}`} />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'}`} />
                 <span className="hidden sm:inline">{item.label}</span>
                 <span className="sm:hidden">{item.shortLabel}</span>
                 {item.badge && (
