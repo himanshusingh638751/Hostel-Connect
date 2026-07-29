@@ -28,6 +28,7 @@ interface ProfileViewProps {
   onUpdateProfile: (updated: Partial<User>) => void;
   onToggleItemStatus: (itemId: string, status: 'Available' | 'Reserved' | 'Sold') => void;
   onRemoveWishlist: (itemId: string) => void;
+  onDeleteProfile?: () => void;
 }
 
 export const ProfileView: React.FC<ProfileViewProps> = ({
@@ -40,10 +41,12 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onSelectQuestion,
   onUpdateProfile,
   onToggleItemStatus,
-  onRemoveWishlist
+  onRemoveWishlist,
+  onDeleteProfile
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<'listings' | 'questions' | 'wishlist' | 'reviews'>('listings');
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Edit form state
   const [name, setName] = useState(currentUser.name);
@@ -312,6 +315,60 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               </div>
             ))
           )}
+        </div>
+      )}
+
+      {/* Danger Zone */}
+      <div className="mt-8 pt-8 border-t border-slate-200">
+        <h3 className="text-sm font-bold text-slate-900 mb-4">Danger Zone</h3>
+        <div className="bg-rose-50 border border-rose-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h4 className="text-rose-900 font-bold text-sm">Delete Profile</h4>
+            <p className="text-xs text-rose-700 mt-1">
+              Once you delete your profile, there is no going back. Please be certain.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="shrink-0 flex items-center gap-2 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm"
+          >
+            <Trash2 className="w-4 h-4" />
+            Delete Account
+          </button>
+        </div>
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/80 backdrop-blur-sm">
+          <div className="bg-white border border-rose-200 rounded-3xl p-6 w-full max-w-sm space-y-4 text-slate-900 shadow-xl shadow-rose-900/5">
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-12 h-12 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mb-2">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-slate-900 text-lg">Delete Profile?</h3>
+              <p className="text-sm text-slate-600">
+                This action cannot be undone. All your listings, questions, and data will be permanently removed.
+              </p>
+            </div>
+            <div className="flex gap-3 pt-4">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="flex-1 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-bold transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  onDeleteProfile?.();
+                }}
+                className="flex-1 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-sm font-bold transition-all"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

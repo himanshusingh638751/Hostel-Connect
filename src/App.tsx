@@ -494,7 +494,7 @@ export default function App() {
         }}
         onOpenCreateListing={() => setShowCreateListingModal(true)}
         onOpenCreateQuestion={() => setShowCreateQuestionModal(true)}
-        onOpenUserSwitcher={() => setShowUserSwitcherModal(true)}
+        onOpenProfile={() => setActiveTab('profile')}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         activeTab={activeTab}
@@ -588,6 +588,10 @@ export default function App() {
             onUpdateProfile={handleUpdateProfile}
             onToggleItemStatus={handleToggleItemStatus}
             onRemoveWishlist={handleToggleWishlist}
+            onDeleteProfile={() => {
+              setAllUsers(prev => prev.filter(u => u.id !== currentUser.id));
+              setCurrentUser(null);
+            }}
           />
         )}
 

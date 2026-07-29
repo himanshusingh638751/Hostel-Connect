@@ -28,7 +28,7 @@ interface HeaderProps {
   onOpenWishlist: () => void;
   onOpenCreateListing: () => void;
   onOpenCreateQuestion: () => void;
-  onOpenUserSwitcher: () => void;
+  onOpenProfile: () => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   activeTab: string;
@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenWishlist,
   onOpenCreateListing,
   onOpenCreateQuestion,
-  onOpenUserSwitcher,
+  onOpenProfile,
   onLogout,
   searchQuery,
   setSearchQuery,
@@ -202,30 +202,38 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </button>
 
-            {/* User Account Switcher Button */}
+            {/* Profile Button */}
             <button
-              onClick={onOpenUserSwitcher}
-              className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl bg-slate-100/90 hover:bg-slate-200/90 border border-slate-300 transition-all text-left group"
-              title="Switch Active Student Account"
-              id="btn-user-switcher"
+              onClick={onOpenProfile}
+              className={`flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl border transition-all text-left group ${
+                activeTab === 'profile'
+                  ? 'bg-indigo-50 border-indigo-200 shadow-sm dark:bg-indigo-500/10 dark:border-indigo-500/20'
+                  : 'bg-slate-100/90 hover:bg-slate-200/90 border-slate-300 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700'
+              }`}
+              title="My Profile"
+              id="btn-profile"
             >
               <img
                 src={currentUser.avatar}
                 alt={currentUser.name}
-                className="w-8 h-8 rounded-lg object-cover border border-slate-300 group-hover:scale-105 transition-transform"
+                className="w-8 h-8 rounded-lg object-cover border border-slate-300 dark:border-slate-600 group-hover:scale-105 transition-transform"
               />
               <div className="hidden sm:block">
-                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider leading-none mb-0.5">Active Student</div>
-                <div className="text-xs font-bold text-slate-900 leading-none truncate max-w-[100px]">{currentUser.name}</div>
+                <div className={`text-[10px] font-bold uppercase tracking-wider leading-none mb-0.5 ${
+                  activeTab === 'profile' ? 'text-indigo-600' : 'text-slate-500 dark:text-slate-400'
+                }`}>
+                  My Profile
+                </div>
+                <div className="text-xs font-bold text-slate-900 dark:text-slate-100 leading-none truncate max-w-[100px]">{currentUser.name}</div>
               </div>
             </button>
             <button
               onClick={onLogout}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100/90 hover:bg-slate-200/90 text-slate-700 font-semibold border border-slate-300 transition-all text-sm"
-              title="Back to Portal"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100/90 hover:bg-slate-200/90 text-rose-600 font-semibold border border-slate-300 transition-all text-sm"
+              title="Log out"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
-              <span className="hidden sm:inline">Back</span>
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Log out</span>
             </button>
 
           </div>
