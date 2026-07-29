@@ -31,22 +31,35 @@ export const UserSwitcherModal: React.FC<UserSwitcherModalProps> = ({
   const [roomNumber, setRoomNumber] = useState('210');
   const [department, setDepartment] = useState('Computer Science');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [avatar, setAvatar] = useState('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200');
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatar(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) return;
+    if (!name.trim() || !email.trim()) return;
 
     const newUser: User = {
       id: `usr_${Date.now()}`,
       name: name.trim(),
-      email: email.trim() || `${name.toLowerCase().replace(/\s+/g, '.')}@hostel.edu`,
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200',
+      email: email.trim(),
+      avatar: avatar?.trim() || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200',
       year,
       role,
       hostelBlock,
       roomNumber,
       department,
-      phone: '+91 98765 00000',
+      phone: phone?.trim() || '+91 98765 00000',
       bio: `Student in ${department}, residing at ${hostelBlock} Room ${roomNumber}.`,
       rating: 5.0,
       reviewCount: 0,
@@ -217,14 +230,56 @@ export const UserSwitcherModal: React.FC<UserSwitcherModalProps> = ({
             </div>
 
             <div>
-              <label className="font-bold text-slate-600">Email Address (Optional)</label>
+              <label className="font-bold text-slate-600">Email Address *</label>
               <input
                 type="email"
-                placeholder="Auto-generated if empty"
+                placeholder="e.g. student@hostel.edu"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
                 className="w-full bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-slate-900 mt-1"
               />
+            </div>
+
+            <div>
+              <label className="font-bold text-slate-600">Mobile Number</label>
+              <input
+                type="tel"
+                placeholder="e.g. +91 98765 00000"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-slate-900 mt-1"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-slate-600">Profile Photo</label>
+              <div className="flex items-center gap-3 mt-1">
+                <img
+                  src={avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200'}
+                  alt="Preview"
+                  className="w-10 h-10 rounded-xl object-cover border border-slate-300 shrink-0"
+                  onError={(e) => (e.currentTarget.src = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200')}
+                />
+                <div className="flex-1 space-y-2">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                    className="w-full text-sm text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                  />
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-slate-400 font-medium">OR paste URL:</span>
+                    <input
+                      type="url"
+                      placeholder="https://..."
+                      value={(avatar || '').startsWith('data:') ? '' : avatar}
+                      onChange={(e) => setAvatar(e.target.value)}
+                      className="flex-1 bg-slate-100 border border-slate-300 rounded-lg p-1.5 text-xs text-slate-900"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="flex gap-2 pt-2">

@@ -54,10 +54,7 @@ export default function App() {
     return saved ? JSON.parse(saved) : SAMPLE_USERS;
   });
 
-  const [currentUser, setCurrentUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('hc_current_user_v2');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const [items, setItems] = useState<MarketplaceItem[]>(() => {
     const saved = localStorage.getItem('hc_items_v5');
@@ -457,7 +454,15 @@ export default function App() {
   };
 
   if (!currentUser) {
-    return <LoginView onLogin={setCurrentUser} />;
+    return (
+      <LoginView 
+        onLogin={setCurrentUser} 
+        onRegister={(newUser) => {
+          setAllUsers(prev => [...prev, newUser]);
+          setCurrentUser(newUser);
+        }}
+      />
+    );
   }
 
   // Derived calculations
