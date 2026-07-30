@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { User, UserRole, AcademicYear } from '../../types';
-import { SAMPLE_USERS } from '../../data/initialData';
 import { Building2, UserCheck, GraduationCap, ChevronRight, ArrowLeft, UserPlus } from 'lucide-react';
+import { compressImage } from '../../utils';
 
 interface LoginViewProps {
+  allUsers: User[];
   onLogin: (user: User) => void;
   onRegister?: (user: User) => void;
 }
 
-export function LoginView({ onLogin, onRegister }: LoginViewProps) {
+export function LoginView({ allUsers, onLogin, onRegister }: LoginViewProps) {
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
+  const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   
   // Registration form state
@@ -17,27 +19,34 @@ export function LoginView({ onLogin, onRegister }: LoginViewProps) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [department, setDepartment] = useState('Computer Science');
-  const [hostelBlock, setHostelBlock] = useState('Block B2 (Boys)');
+  const [hostelBlock, setHostelBlock] = useState('');
   const [roomNumber, setRoomNumber] = useState('210');
   const [avatar, setAvatar] = useState('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200');
+  const [registerPassword, setRegisterPassword] = useState('');
+  const [loginUserId, setLoginUserId] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
 
-  const handleRoleSelect = (role: UserRole) => {
+  const handleRoleSelect = (role: UserRole, year?: string) => {
     setSelectedRole(role);
+    if (year) setSelectedYear(year);
     setShowRegisterForm(false);
+    setLoginError('');
   };
 
   const handleUserLogin = (user: User) => {
     onLogin(user);
   };
   
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatar(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const compressed = await compressImage(file);
+        setAvatar(compressed);
+      } catch (err) {
+        console.error('Failed to compress image:', err);
+      }
     }
   };
 
@@ -47,12 +56,14 @@ export function LoginView({ onLogin, onRegister }: LoginViewProps) {
 
     const isSenior = selectedRole === 'Senior';
     
+    if (!registerPassword.trim()) return;
+    if (!registerPassword.trim()) return;
     const newUser: User = {
       id: `usr_${Date.now()}`,
       name: name.trim(),
       email: email.trim(),
       avatar: avatar?.trim() || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200',
-      year: isSenior ? '4th Year (Senior)' : '1st Year (Junior)',
+      year: isSenior ? (selectedYear || '4th Year (Senior)') : '1st Year (Junior)' as AcademicYear,
       role: isSenior ? 'Senior' : 'Junior',
       hostelBlock,
       roomNumber,
@@ -62,7 +73,8 @@ export function LoginView({ onLogin, onRegister }: LoginViewProps) {
       rating: 5.0,
       reviewCount: 0,
       verifiedStudent: true,
-      badges: ['Verified Student', isSenior ? 'Senior Student' : 'Freshie 2026']
+      badges: ['Verified Student', isSenior ? 'Senior Student' : 'Freshie 2026'],
+      password: registerPassword
     };
 
     if (onRegister) {
@@ -70,7 +82,7 @@ export function LoginView({ onLogin, onRegister }: LoginViewProps) {
     }
   };
 
-  const availableUsers = SAMPLE_USERS.filter(u => 
+  const availableUsers = allUsers.filter(u => 
     selectedRole === 'Senior' 
       ? (u.role === 'Senior' || u.role === 'Hostel Rep')
       : u.role === 'Junior'
@@ -100,36 +112,70 @@ export function LoginView({ onLogin, onRegister }: LoginViewProps) {
           </div>
           
           {!showRegisterForm ? (
-            <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 no-scrollbar animate-in fade-in slide-in-from-right-8 duration-300">
-              <div className="space-y-3">
-                {availableUsers.map((usr) => (
-                  <button
-                    key={usr.id}
-                    onClick={() => handleUserLogin(usr)}
-                    className="w-full text-left p-4 rounded-2xl border bg-slate-50/60 hover:bg-slate-100/80 border-slate-200 hover:border-indigo-600/40 transition-all flex items-center justify-between gap-3 group"
-                  >
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={usr.avatar}
-                        alt={usr.name}
-                        className="w-14 h-14 rounded-xl object-cover border border-slate-300 group-hover:scale-105 transition-transform"
-                      />
-                      <div>
-                        <div className="font-bold text-base text-slate-900">{usr.name}</div>
-                        <div className="text-[10px] text-indigo-600 font-bold mt-1 tracking-wide uppercase">
-                          {usr.department} • {usr.hostelBlock}
-                        </div>
-                        <div className="text-xs text-slate-500">{usr.email}</div>
-                      </div>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all" />
-                  </button>
-                ))}
+            <div className="space-y-4 animate-in fade-in slide-in-from-right-8 duration-300">
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                setLoginError('');
+                const user = availableUsers.find(u => u.email === loginUserId || u.id === loginUserId);
+                if (!user) {
+                  setLoginError('User ID / Email not found.');
+                  return;
+                }
+                if (user.password && user.password !== loginPassword) {
+                  setLoginError('Incorrect password.');
+                  return;
+                }
+                handleUserLogin(user);
+              }} className="space-y-4">
+                <div>
+                  <label className="font-bold text-slate-600">Email or User ID</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. rohan.s@hostel.edu"
+                    value={loginUserId}
+                    onChange={(e) => setLoginUserId(e.target.value)}
+                    className="w-full bg-slate-100 border border-slate-300 rounded-xl p-3 text-slate-900 mt-1"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-slate-600">Password</label>
+                  <input
+                    type="password"
+                    placeholder="Enter your password"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    className="w-full bg-slate-100 border border-slate-300 rounded-xl p-3 text-slate-900 mt-1"
+                    required
+                  />
+                </div>
+                {loginError && <div className="text-red-500 text-sm font-semibold">{loginError}</div>}
+                
+                <div className="text-xs text-slate-500 bg-slate-100 p-3 rounded-xl border border-slate-200">
+                  <p className="font-bold text-slate-700 mb-1">Demo Accounts:</p>
+                  {selectedRole === 'Senior' ? (
+                    <p>ID: <b>rohan.s@hostel.edu</b><br/>Pass: <b>password123</b></p>
+                  ) : (
+                    <p>ID: <b>aarav.p@hostel.edu</b><br/>Pass: <b>password123</b></p>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-indigo-600/20 active:scale-[0.98]"
+                >
+                  Login to {selectedRole} Portal
+                </button>
+              </form>
+
+              <div className="relative py-4 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200"></div></div>
+                <div className="relative bg-white px-4 text-xs font-bold text-slate-400">OR</div>
               </div>
-              
+
               <button
                 onClick={() => setShowRegisterForm(true)}
-                className="w-full py-4 rounded-2xl border border-dashed border-slate-300 hover:border-indigo-600/40 text-sm text-slate-600 hover:text-indigo-600 font-bold flex items-center justify-center gap-2 transition-all"
+                className="w-full py-3.5 rounded-xl border-2 border-dashed border-slate-300 hover:border-indigo-600/40 text-sm text-slate-600 hover:text-indigo-600 font-bold flex items-center justify-center gap-2 transition-all"
               >
                 <UserPlus className="w-4 h-4" />
                 Register New {selectedRole} Account
@@ -159,6 +205,18 @@ export function LoginView({ onLogin, onRegister }: LoginViewProps) {
                   className="w-full bg-slate-100 border border-slate-300 rounded-xl p-3 text-slate-900 mt-1"
                 />
               </div>
+              
+              <div>
+                <label className="font-bold text-slate-600">Password *</label>
+                <input
+                  type="password"
+                  placeholder="Create a password"
+                  value={registerPassword}
+                  onChange={(e) => setRegisterPassword(e.target.value)}
+                  required
+                  className="w-full bg-slate-100 border border-slate-300 rounded-xl p-3 text-slate-900 mt-1"
+                />
+              </div>
 
               <div>
                 <label className="font-bold text-slate-600">Mobile Number</label>
@@ -177,12 +235,15 @@ export function LoginView({ onLogin, onRegister }: LoginViewProps) {
                   <select
                     value={hostelBlock}
                     onChange={(e) => setHostelBlock(e.target.value)}
+                    required
                     className="w-full bg-slate-100 border border-slate-300 rounded-xl p-3 text-slate-900 mt-1"
                   >
-                    <option value="Block A1 (Boys)">Block A1 (Boys)</option>
-                    <option value="Block B2 (Boys)">Block B2 (Boys)</option>
-                    <option value="Block G1 (Girls)">Block G1 (Girls)</option>
-                    <option value="Block G2 (Girls)">Block G2 (Girls)</option>
+                    <option value="" disabled>Select Hostel Block</option>
+                    <option value="Kadamb Boys Hostel">Kadamb Boys Hostel</option>
+                    <option value="Gulmohar Boys Hostel">Gulmohar Boys Hostel</option>
+                    <option value="Shirish Boys Hostel">Shirish Boys Hostel</option>
+                    <option value="Palash Boys Hostel">Palash Boys Hostel</option>
+                    <option value="Aparajita Girls Hostel">Aparajita Girls Hostel</option>
                   </select>
                 </div>
                 <div>
@@ -290,13 +351,29 @@ export function LoginView({ onLogin, onRegister }: LoginViewProps) {
             <p className="text-slate-600 text-sm leading-relaxed mb-8 flex-1">
               List your old textbooks and lab equipment for sale, mentor junior students, and share your academic experience on the forum.
             </p>
-            <button
-              onClick={() => handleRoleSelect('Senior')}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-between transition-all shadow-md shadow-indigo-600/20 group-hover:-translate-y-0.5"
-            >
-              <span>Login as Senior</span>
-              <ChevronRight className="w-5 h-5" />
-            </button>
+            <div className="space-y-3">
+              <button
+                onClick={() => handleRoleSelect('Senior', '2nd Year')}
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-between transition-all shadow-md shadow-indigo-600/20 group-hover:-translate-y-0.5"
+              >
+                <span>Login as 2nd Year</span>
+                <ChevronRight className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => handleRoleSelect('Senior', '3rd Year (Senior)')}
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-between transition-all shadow-md shadow-indigo-600/20 group-hover:-translate-y-0.5"
+              >
+                <span>Login as 3rd Year</span>
+                <ChevronRight className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => handleRoleSelect('Senior', '4th Year (Senior)')}
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-between transition-all shadow-md shadow-indigo-600/20 group-hover:-translate-y-0.5"
+              >
+                <span>Login as 4th Year</span>
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

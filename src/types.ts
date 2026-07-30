@@ -17,6 +17,7 @@ export interface User {
   reviewCount: number;
   verifiedStudent: boolean;
   badges: string[];
+  password?: string;
 }
 
 export type ItemCategory = 

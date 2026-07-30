@@ -34,76 +34,150 @@ import {
   MentorReview
 } from './types';
 
-import {
-  SAMPLE_USERS,
-  INITIAL_MARKETPLACE_ITEMS,
-  INITIAL_FORUM_QUESTIONS,
-  INITIAL_FORUM_ANSWERS,
-  INITIAL_NOTICES,
-  INITIAL_CONVERSATIONS,
-  INITIAL_MESSAGES,
-  INITIAL_REVIEWS,
-  INITIAL_NOTIFICATIONS,
-  INITIAL_MENTOR_REVIEWS
-} from './data/initialData';
-
 export default function App() {
   // Persistence state
   const [allUsers, setAllUsers] = useState<User[]>(() => {
     const saved = localStorage.getItem('hc_users_v2');
-    return saved ? JSON.parse(saved) : SAMPLE_USERS;
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_users_v2');
+      }
+    }
+    return [];
   });
-
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const [items, setItems] = useState<MarketplaceItem[]>(() => {
     const saved = localStorage.getItem('hc_items_v5');
-    return saved ? JSON.parse(saved) : INITIAL_MARKETPLACE_ITEMS;
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_items_v5');
+      }
+    }
+    return [];
   });
 
   const [questions, setQuestions] = useState<ForumQuestion[]>(() => {
     const saved = localStorage.getItem('hc_questions');
-    return saved ? JSON.parse(saved) : INITIAL_FORUM_QUESTIONS;
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_questions');
+      }
+    }
+    return [];
   });
 
   const [answersMap, setAnswersMap] = useState<Record<string, ForumAnswer[]>>(() => {
     const saved = localStorage.getItem('hc_answers');
-    return saved ? JSON.parse(saved) : INITIAL_FORUM_ANSWERS;
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_answers');
+      }
+    }
+    return {};
   });
 
   const [notices, setNotices] = useState<Notice[]>(() => {
     const saved = localStorage.getItem('hc_notices');
-    return saved ? JSON.parse(saved) : INITIAL_NOTICES;
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_notices');
+      }
+    }
+    return [];
   });
 
   const [conversations, setConversations] = useState<Conversation[]>(() => {
     const saved = localStorage.getItem('hc_conversations');
-    return saved ? JSON.parse(saved) : INITIAL_CONVERSATIONS;
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_conversations');
+      }
+    }
+    return [];
   });
 
   const [messagesMap, setMessagesMap] = useState<Record<string, ChatMessage[]>>(() => {
     const saved = localStorage.getItem('hc_messages');
-    return saved ? JSON.parse(saved) : INITIAL_MESSAGES;
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_messages');
+      }
+    }
+    return {};
   });
 
   const [reviews, setReviews] = useState<SellerReview[]>(() => {
     const saved = localStorage.getItem('hc_reviews');
-    return saved ? JSON.parse(saved) : INITIAL_REVIEWS;
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_reviews');
+      }
+    }
+    return [];
   });
 
   const [mentorReviews, setMentorReviews] = useState<MentorReview[]>(() => {
     const saved = localStorage.getItem('hc_mentor_reviews');
-    return saved ? JSON.parse(saved) : INITIAL_MENTOR_REVIEWS;
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_mentor_reviews');
+      }
+    }
+    return [];
   });
 
   const [notifications, setNotifications] = useState<Notification[]>(() => {
     const saved = localStorage.getItem('hc_notifications');
-    return saved ? JSON.parse(saved) : INITIAL_NOTIFICATIONS;
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_notifications');
+      }
+    }
+    return [];
   });
 
   const [wishlistIds, setWishlistIds] = useState<string[]>(() => {
     const saved = localStorage.getItem('hc_wishlist');
-    return saved ? JSON.parse(saved) : ['item_1', 'item_3'];
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.error('Failed to parse ' + 'hc_wishlist');
+      }
+    }
+    return ['item_1', 'item_3'];
   });
 
   // Navigation & Filter states
@@ -137,18 +211,29 @@ export default function App() {
   const [showNotificationsDropdown, setShowNotificationsDropdown] = useState<boolean>(false);
 
   // Sync state changes to localStorage
-  useEffect(() => { localStorage.setItem('hc_users_v2', JSON.stringify(allUsers)); }, [allUsers]);
-  useEffect(() => { localStorage.setItem('hc_current_user_v2', JSON.stringify(currentUser)); }, [currentUser]);
-  useEffect(() => { localStorage.setItem('hc_items_v5', JSON.stringify(items)); }, [items]);
-  useEffect(() => { localStorage.setItem('hc_questions', JSON.stringify(questions)); }, [questions]);
-  useEffect(() => { localStorage.setItem('hc_answers', JSON.stringify(answersMap)); }, [answersMap]);
-  useEffect(() => { localStorage.setItem('hc_notices', JSON.stringify(notices)); }, [notices]);
-  useEffect(() => { localStorage.setItem('hc_conversations', JSON.stringify(conversations)); }, [conversations]);
-  useEffect(() => { localStorage.setItem('hc_messages', JSON.stringify(messagesMap)); }, [messagesMap]);
-  useEffect(() => { localStorage.setItem('hc_reviews', JSON.stringify(reviews)); }, [reviews]);
-  useEffect(() => { localStorage.setItem('hc_mentor_reviews', JSON.stringify(mentorReviews)); }, [mentorReviews]);
-  useEffect(() => { localStorage.setItem('hc_notifications', JSON.stringify(notifications)); }, [notifications]);
-  useEffect(() => { localStorage.setItem('hc_wishlist', JSON.stringify(wishlistIds)); }, [wishlistIds]);
+  const safeSetStorage = (key: string, data: any) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+    } catch (e) {
+      console.error(`Error saving ${key} to localStorage:`, e);
+      if (e instanceof DOMException && e.name === 'QuotaExceededError') {
+        alert('Storage quota exceeded! The image you uploaded might be too large. Please use a smaller image or an image URL.');
+      }
+    }
+  };
+
+  useEffect(() => { safeSetStorage('hc_users_v2', allUsers); }, [allUsers]);
+  useEffect(() => { safeSetStorage('hc_current_user_v2', currentUser); }, [currentUser]);
+  useEffect(() => { safeSetStorage('hc_items_v5', items); }, [items]);
+  useEffect(() => { safeSetStorage('hc_questions', questions); }, [questions]);
+  useEffect(() => { safeSetStorage('hc_answers', answersMap); }, [answersMap]);
+  useEffect(() => { safeSetStorage('hc_notices', notices); }, [notices]);
+  useEffect(() => { safeSetStorage('hc_conversations', conversations); }, [conversations]);
+  useEffect(() => { safeSetStorage('hc_messages', messagesMap); }, [messagesMap]);
+  useEffect(() => { safeSetStorage('hc_reviews', reviews); }, [reviews]);
+  useEffect(() => { safeSetStorage('hc_mentor_reviews', mentorReviews); }, [mentorReviews]);
+  useEffect(() => { safeSetStorage('hc_notifications', notifications); }, [notifications]);
+  useEffect(() => { safeSetStorage('hc_wishlist', wishlistIds); }, [wishlistIds]);
 
   // Handler: Rate Mentor
   const handleRateMentor = (mentorId: string, rating: number, testimonial: string) => {
@@ -456,6 +541,7 @@ export default function App() {
   if (!currentUser) {
     return (
       <LoginView 
+        allUsers={allUsers}
         onLogin={setCurrentUser} 
         onRegister={(newUser) => {
           setAllUsers(prev => [...prev, newUser]);

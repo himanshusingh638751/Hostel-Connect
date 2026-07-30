@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Upload, Sparkles, Image, Tag, DollarSign, Building2, AlertCircle } from 'lucide-react';
 import { MarketplaceItem, ItemCategory, ItemCondition, User } from '../../types';
+import { compressImage } from '../../utils';
 
 interface CreateListingModalProps {
   isOpen: boolean;
@@ -236,14 +237,15 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                       type="file" 
                       accept="image/*"
                       className="hidden" 
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            setImageUrl(reader.result as string);
-                          };
-                          reader.readAsDataURL(file);
+                          try {
+                            const compressed = await compressImage(file);
+                            setImageUrl(compressed);
+                          } catch (err) {
+                            console.error('Failed to compress image:', err);
+                          }
                         }
                       }} 
                     />

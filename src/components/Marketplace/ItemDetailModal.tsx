@@ -182,9 +182,9 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
               </div>
 
               {/* Tags */}
-              {item.tags.length > 0 && (
+              {(item.tags || []).length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
-                  {item.tags.map(tag => (
+                  {(item.tags || []).map(tag => (
                     <span key={tag} className="text-[11px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-md border border-slate-300/60">
                       #{tag}
                     </span>

@@ -392,7 +392,19 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="font-bold text-slate-600">Hostel Block</label>
-                  <input type="text" value={hostelBlock} onChange={(e) => setHostelBlock(e.target.value)} className="w-full bg-slate-100 border border-slate-300 text-xs rounded-xl p-2.5 text-slate-900 mt-1" />
+                  <select
+                    value={hostelBlock}
+                    onChange={(e) => setHostelBlock(e.target.value)}
+                    required
+                    className="w-full bg-slate-100 border border-slate-300 rounded-xl text-xs p-2.5 text-slate-900 mt-1"
+                  >
+                    <option value="" disabled>Select Hostel Block</option>
+                    <option value="Kadamb Boys Hostel">Kadamb Boys Hostel</option>
+                    <option value="Gulmohar Boys Hostel">Gulmohar Boys Hostel</option>
+                    <option value="Shirish Boys Hostel">Shirish Boys Hostel</option>
+                    <option value="Palash Boys Hostel">Palash Boys Hostel</option>
+                    <option value="Aparajita Girls Hostel">Aparajita Girls Hostel</option>
+                  </select>
                 </div>
                 <div>
                   <label className="font-bold text-slate-600">Room Number</label>

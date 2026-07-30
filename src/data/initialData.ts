@@ -27,7 +27,8 @@ export const SAMPLE_USERS: User[] = [
     rating: 4.9,
     reviewCount: 24,
     verifiedStudent: true,
-    badges: ['Top Seller', 'Senior Mentor', 'Academic Helper']
+    badges: ['Top Seller', 'Senior Mentor', 'Academic Helper'],
+    password: 'password123'
   },
   {
     id: 'usr_aarav',
@@ -44,7 +45,8 @@ export const SAMPLE_USERS: User[] = [
     rating: 5.0,
     reviewCount: 3,
     verifiedStudent: true,
-    badges: ['Freshie 2026', 'Active Buyer']
+    badges: ['Freshie 2026', 'Active Buyer'],
+    password: 'password123'
   },
   {
     id: 'usr_ananya',
@@ -61,7 +63,8 @@ export const SAMPLE_USERS: User[] = [
     rating: 4.8,
     reviewCount: 19,
     verifiedStudent: true,
-    badges: ['Hostel Rep', 'Top Seller', 'Sports Captain']
+    badges: ['Hostel Rep', 'Top Seller', 'Sports Captain'],
+    password: 'password123'
   },
   {
     id: 'usr_vikram',
@@ -78,7 +81,8 @@ export const SAMPLE_USERS: User[] = [
     rating: 4.7,
     reviewCount: 15,
     verifiedStudent: true,
-    badges: ['Moving Out Sale', 'Verified Senior']
+    badges: ['Moving Out Sale', 'Verified Senior'],
+    password: 'password123'
   }
 ];
 

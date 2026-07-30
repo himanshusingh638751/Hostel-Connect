@@ -56,7 +56,7 @@ export const ForumView: React.FC<ForumViewProps> = ({
         const matchesTitle = q.title.toLowerCase().includes(query);
         const matchesContent = q.content.toLowerCase().includes(query);
         const matchesAuthor = q.author.name.toLowerCase().includes(query);
-        const matchesTags = q.tags.some(t => t.toLowerCase().includes(query));
+        const matchesTags = (q.tags || []).some(t => t.toLowerCase().includes(query));
         if (!matchesTitle && !matchesContent && !matchesAuthor && !matchesTags) {
           return false;
         }

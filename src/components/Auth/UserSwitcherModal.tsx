@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, UserCheck, ShieldCheck, Building2, Plus, UserPlus } from 'lucide-react';
 import { User, UserRole, AcademicYear } from '../../types';
+import { compressImage } from '../../utils';
 
 interface UserSwitcherModalProps {
   isOpen: boolean;
@@ -27,27 +28,29 @@ export const UserSwitcherModal: React.FC<UserSwitcherModalProps> = ({
   const [name, setName] = useState('');
   const [role, setRole] = useState<UserRole>('Junior');
   const [year, setYear] = useState<AcademicYear>('1st Year (Junior)');
-  const [hostelBlock, setHostelBlock] = useState('Block B2 (Boys)');
+  const [hostelBlock, setHostelBlock] = useState('');
   const [roomNumber, setRoomNumber] = useState('210');
   const [department, setDepartment] = useState('Computer Science');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [avatar, setAvatar] = useState('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200');
+  const [registerPassword, setRegisterPassword] = useState('');
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatar(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const compressed = await compressImage(file);
+        setAvatar(compressed);
+      } catch (err) {
+        console.error('Failed to compress image:', err);
+      }
     }
   };
 
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim()) return;
+    if (!name.trim() || !email.trim() || !registerPassword.trim()) return;
 
     const newUser: User = {
       id: `usr_${Date.now()}`,
@@ -200,12 +203,19 @@ export const UserSwitcherModal: React.FC<UserSwitcherModalProps> = ({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="font-bold text-slate-600">Hostel Block</label>
-                <input
-                  type="text"
-                  value={hostelBlock}
-                  onChange={(e) => setHostelBlock(e.target.value)}
-                  className="w-full bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-slate-900 mt-1"
-                />
+                <select
+                    value={hostelBlock}
+                    onChange={(e) => setHostelBlock(e.target.value)}
+                    required
+                    className="w-full bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-slate-900 mt-1"
+                  >
+                    <option value="" disabled>Select Hostel Block</option>
+                    <option value="Kadamb Boys Hostel">Kadamb Boys Hostel</option>
+                    <option value="Gulmohar Boys Hostel">Gulmohar Boys Hostel</option>
+                    <option value="Shirish Boys Hostel">Shirish Boys Hostel</option>
+                    <option value="Palash Boys Hostel">Palash Boys Hostel</option>
+                    <option value="Aparajita Girls Hostel">Aparajita Girls Hostel</option>
+                  </select>
               </div>
 
               <div>
@@ -236,6 +246,17 @@ export const UserSwitcherModal: React.FC<UserSwitcherModalProps> = ({
                 placeholder="e.g. student@hostel.edu"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-slate-900 mt-1"
+              />
+            </div>
+            <div>
+              <label className="font-bold text-slate-600">Password *</label>
+              <input
+                type="password"
+                placeholder="Create a password"
+                value={registerPassword}
+                onChange={(e) => setRegisterPassword(e.target.value)}
                 required
                 className="w-full bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-slate-900 mt-1"
               />

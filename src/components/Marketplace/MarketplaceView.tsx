@@ -73,7 +73,7 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
         const matchesCategory = item.category.toLowerCase().includes(query);
         const matchesDesc = item.description.toLowerCase().includes(query);
         const matchesSeller = item.seller.name.toLowerCase().includes(query) || item.seller.hostelBlock.toLowerCase().includes(query);
-        const matchesTags = item.tags.some(t => t.toLowerCase().includes(query));
+        const matchesTags = (item.tags || []).some(t => t.toLowerCase().includes(query));
         if (!matchesTitle && !matchesCategory && !matchesDesc && !matchesSeller && !matchesTags) {
           return false;
         }
