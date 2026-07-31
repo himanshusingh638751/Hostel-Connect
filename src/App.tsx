@@ -43,7 +43,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_users_v2');
+        console.warn('Failed to parse ' + 'hc_users_v2');
       }
     }
     return [];
@@ -57,7 +57,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_items_v5');
+        console.warn('Failed to parse ' + 'hc_items_v5');
       }
     }
     return [];
@@ -70,7 +70,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_questions');
+        console.warn('Failed to parse ' + 'hc_questions');
       }
     }
     return [];
@@ -83,7 +83,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_answers');
+        console.warn('Failed to parse ' + 'hc_answers');
       }
     }
     return {};
@@ -96,7 +96,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_notices');
+        console.warn('Failed to parse ' + 'hc_notices');
       }
     }
     return [];
@@ -109,7 +109,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_conversations');
+        console.warn('Failed to parse ' + 'hc_conversations');
       }
     }
     return [];
@@ -122,7 +122,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_messages');
+        console.warn('Failed to parse ' + 'hc_messages');
       }
     }
     return {};
@@ -135,7 +135,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_reviews');
+        console.warn('Failed to parse ' + 'hc_reviews');
       }
     }
     return [];
@@ -148,7 +148,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_mentor_reviews');
+        console.warn('Failed to parse ' + 'hc_mentor_reviews');
       }
     }
     return [];
@@ -161,7 +161,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_notifications');
+        console.warn('Failed to parse ' + 'hc_notifications');
       }
     }
     return [];
@@ -174,7 +174,7 @@ export default function App() {
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
-        console.error('Failed to parse ' + 'hc_wishlist');
+        console.warn('Failed to parse ' + 'hc_wishlist');
       }
     }
     return ['item_1', 'item_3'];
@@ -215,7 +215,7 @@ export default function App() {
     try {
       localStorage.setItem(key, JSON.stringify(data));
     } catch (e) {
-      console.error(`Error saving ${key} to localStorage:`, e);
+      console.warn(`Storage quota exceeded for ${key}. Try clearing browser data or using smaller images.`);
       if (e instanceof DOMException && e.name === 'QuotaExceededError') {
         alert('Storage quota exceeded! The image you uploaded might be too large. Please use a smaller image or an image URL.');
       }

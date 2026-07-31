@@ -43,7 +43,7 @@ export const UserSwitcherModal: React.FC<UserSwitcherModalProps> = ({
         const compressed = await compressImage(file);
         setAvatar(compressed);
       } catch (err) {
-        console.error('Failed to compress image:', err);
+        console.warn('Failed to compress image:', err);
       }
     }
   };

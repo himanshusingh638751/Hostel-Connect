@@ -45,7 +45,7 @@ export function LoginView({ allUsers, onLogin, onRegister }: LoginViewProps) {
         const compressed = await compressImage(file);
         setAvatar(compressed);
       } catch (err) {
-        console.error('Failed to compress image:', err);
+        console.warn('Failed to compress image:', err);
       }
     }
   };

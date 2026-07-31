@@ -244,7 +244,7 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({
                             const compressed = await compressImage(file);
                             setImageUrl(compressed);
                           } catch (err) {
-                            console.error('Failed to compress image:', err);
+                            console.warn('Failed to compress image:', err);
                           }
                         }
                       }} 
