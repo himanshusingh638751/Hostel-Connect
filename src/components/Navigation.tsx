@@ -72,14 +72,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       badge: totalUnreadMessages > 0 ? `${totalUnreadMessages} New` : null,
       badgeColor: 'bg-rose-500 text-white font-extrabold'
     },
-    {
-      id: 'ai-mentor',
-      label: 'AI Hostel Advisor',
-      shortLabel: 'AI Advisor',
-      icon: Bot,
-      badge: '24/7 AI',
-      badgeColor: 'bg-slate-500/20 text-indigo-700 border-indigo-500/30'
-    },
+
     {
       id: 'profile',
       label: 'My Account & Activity',
@@ -90,9 +83,9 @@ export const Navigation: React.FC<NavigationProps> = ({
     }
   ];
 
-  // Logic separation: Seniors do not need AI Mentor or Senior Contacts
+  // Logic separation: Seniors do not need Senior Contacts
   if (isSenior) {
-    navItems = navItems.filter(item => item.id !== 'ai-mentor' && item.id !== 'seniors');
+    navItems = navItems.filter(item => item.id !== 'seniors');
   }
 
   return (

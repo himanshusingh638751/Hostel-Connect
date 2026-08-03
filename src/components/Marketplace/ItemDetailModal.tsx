@@ -90,11 +90,11 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
             
             {/* Image Gallery Column */}
             <div className="space-y-4">
-              <div className="relative aspect-4/3 rounded-2xl bg-slate-50 overflow-hidden border border-slate-200">
+              <div className="relative aspect-4/3 rounded-2xl bg-slate-100 overflow-hidden border border-slate-200">
                 <img
                   src={item.images[selectedImgIndex] || item.images[0]}
                   alt={item.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
 
                 {item.status === 'Reserved' && (

@@ -15,12 +15,12 @@ import { CreateQuestionModal } from './components/Forum/CreateQuestionModal';
 import { NoticeBoardView } from './components/NoticeBoard/NoticeBoardView';
 import { SeniorsDirectoryView } from './components/Seniors/SeniorsDirectoryView';
 import { ChatView } from './components/Messages/ChatView';
-import { AIMentorView } from './components/AIMentor/AIMentorView';
 import { ProfileView } from './components/Profile/ProfileView';
 import { NotificationDropdown } from './components/Notifications/NotificationDropdown';
 import { UserSwitcherModal } from './components/Auth/UserSwitcherModal';
 import { LoginView } from './components/Auth/LoginView';
 
+import { supabase } from './lib/supabase';
 import {
   User,
   MarketplaceItem,
@@ -304,6 +304,28 @@ export default function App() {
       setConversations(prev => [newConv, ...prev]);
       setMessagesMap(prev => ({ ...prev, [newConvId]: [initialMsg] }));
       setActiveConversationId(newConvId);
+      
+      // Save to Supabase
+      supabase.from('conversations').insert({
+        id: newConv.id,
+        participant_ids: newConv.participantIds,
+        last_message: newConv.lastMessage,
+        last_message_timestamp: new Date().toISOString(),
+        unread_count: newConv.unreadCount,
+        related_item_id: newConv.relatedItemId,
+        related_item_title: newConv.relatedItemTitle
+      }).then(() => {
+        return supabase.from('chat_messages').insert({
+          id: initialMsg.id,
+          conversation_id: initialMsg.conversationId,
+          sender_id: initialMsg.senderId,
+          text: initialMsg.text,
+          timestamp: new Date().toISOString(),
+          item_id: initialMsg.itemId,
+          item_snapshot: initialMsg.itemSnapshot
+        });
+      }).catch(err => console.error("Error creating chat in Supabase:", err));
+
     } else {
       setActiveConversationId(existing.id);
     }
@@ -347,6 +369,8 @@ export default function App() {
     setItems(prev => prev.map(item => 
       item.id === itemId ? { ...item, status: 'Reserved' as const } : item
     ));
+    supabase.from('marketplace_items').update({ status: 'Reserved' }).eq('id', itemId).then(({error}) => { if(error) console.error("Error reserving item in Supabase:", error); });
+    
 
     const item = items.find(i => i.id === itemId);
     if (item) {
@@ -509,6 +533,14 @@ export default function App() {
       text,
       timestamp: 'Just now'
     };
+    supabase.from('chat_messages').insert({
+      id: newMsg.id,
+      conversation_id: newMsg.conversationId,
+      sender_id: newMsg.senderId,
+      text: newMsg.text,
+      timestamp: new Date().toISOString()
+    }).then(({error}) => { if(error) console.error("Error sending message to Supabase:", error); });
+    
 
     setMessagesMap(prev => ({
       ...prev,
@@ -543,9 +575,28 @@ export default function App() {
       <LoginView 
         allUsers={allUsers}
         onLogin={setCurrentUser} 
-        onRegister={(newUser) => {
+        onRegister={async (newUser) => {
           setAllUsers(prev => [...prev, newUser]);
           setCurrentUser(newUser);
+          const { error } = await supabase.from('users').insert({
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+            avatar: newUser.avatar,
+            year: newUser.year,
+            role: newUser.role,
+            hostel_block: newUser.hostelBlock,
+            room_number: newUser.roomNumber,
+            department: newUser.department,
+            phone: newUser.phone,
+            bio: newUser.bio,
+            rating: newUser.rating,
+            review_count: newUser.reviewCount,
+            verified_student: newUser.verifiedStudent,
+            badges: newUser.badges,
+            password: newUser.password
+          });
+          if (error) console.error("Error inserting user:", error);
         }}
       />
     );
@@ -658,9 +709,7 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'ai-mentor' && (
-          <AIMentorView currentUser={currentUser} />
-        )}
+        
 
         {activeTab === 'profile' && (
           <ProfileView
