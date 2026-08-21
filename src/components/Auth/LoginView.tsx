@@ -52,12 +52,12 @@ export function LoginView({ allUsers, onLogin, onRegister }: LoginViewProps) {
 
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim()) return;
+    if (!name.trim() || !email.trim() || !registerPassword.trim()) {
+      setLoginError('Please fill in all required fields.');
+      return;
+    }
 
     const isSenior = selectedRole === 'Senior';
-    
-    if (!registerPassword.trim()) return;
-    if (!registerPassword.trim()) return;
     const newUser: User = {
       id: `usr_${Date.now()}`,
       name: name.trim(),

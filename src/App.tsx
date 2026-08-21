@@ -22,6 +22,18 @@ import { LoginView } from './components/Auth/LoginView';
 
 import { supabase } from './lib/supabase';
 import {
+  SAMPLE_USERS,
+  INITIAL_MARKETPLACE_ITEMS,
+  INITIAL_FORUM_QUESTIONS,
+  INITIAL_FORUM_ANSWERS,
+  INITIAL_NOTICES,
+  INITIAL_CONVERSATIONS,
+  INITIAL_MESSAGES,
+  INITIAL_REVIEWS,
+  INITIAL_MENTOR_REVIEWS,
+  INITIAL_NOTIFICATIONS
+} from './data/initialData';
+import {
   User,
   MarketplaceItem,
   ForumQuestion,
@@ -41,26 +53,37 @@ export default function App() {
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
+        if (parsed && Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {
-        console.warn('Failed to parse ' + 'hc_users_v2');
+        console.warn('Failed to parse hc_users_v2');
       }
     }
-    return [];
+    return SAMPLE_USERS;
   });
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    const saved = localStorage.getItem('hc_current_user_v2');
+    if (saved && saved !== 'undefined') {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.warn('Failed to parse hc_current_user_v2');
+      }
+    }
+    return null;
+  });
 
   const [items, setItems] = useState<MarketplaceItem[]>(() => {
     const saved = localStorage.getItem('hc_items_v5');
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
+        if (parsed && Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {
-        console.warn('Failed to parse ' + 'hc_items_v5');
+        console.warn('Failed to parse hc_items_v5');
       }
     }
-    return [];
+    return INITIAL_MARKETPLACE_ITEMS;
   });
 
   const [questions, setQuestions] = useState<ForumQuestion[]>(() => {
@@ -68,12 +91,12 @@ export default function App() {
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
+        if (parsed && Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {
-        console.warn('Failed to parse ' + 'hc_questions');
+        console.warn('Failed to parse hc_questions');
       }
     }
-    return [];
+    return INITIAL_FORUM_QUESTIONS;
   });
 
   const [answersMap, setAnswersMap] = useState<Record<string, ForumAnswer[]>>(() => {
@@ -81,12 +104,12 @@ export default function App() {
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
+        if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0) return parsed;
       } catch (e) {
-        console.warn('Failed to parse ' + 'hc_answers');
+        console.warn('Failed to parse hc_answers');
       }
     }
-    return {};
+    return INITIAL_FORUM_ANSWERS;
   });
 
   const [notices, setNotices] = useState<Notice[]>(() => {
@@ -94,12 +117,12 @@ export default function App() {
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
+        if (parsed && Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {
-        console.warn('Failed to parse ' + 'hc_notices');
+        console.warn('Failed to parse hc_notices');
       }
     }
-    return [];
+    return INITIAL_NOTICES;
   });
 
   const [conversations, setConversations] = useState<Conversation[]>(() => {
@@ -107,12 +130,12 @@ export default function App() {
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
+        if (parsed && Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {
-        console.warn('Failed to parse ' + 'hc_conversations');
+        console.warn('Failed to parse hc_conversations');
       }
     }
-    return [];
+    return INITIAL_CONVERSATIONS;
   });
 
   const [messagesMap, setMessagesMap] = useState<Record<string, ChatMessage[]>>(() => {
@@ -120,12 +143,12 @@ export default function App() {
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
+        if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0) return parsed;
       } catch (e) {
-        console.warn('Failed to parse ' + 'hc_messages');
+        console.warn('Failed to parse hc_messages');
       }
     }
-    return {};
+    return INITIAL_MESSAGES;
   });
 
   const [reviews, setReviews] = useState<SellerReview[]>(() => {
@@ -133,12 +156,12 @@ export default function App() {
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
+        if (parsed && Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {
-        console.warn('Failed to parse ' + 'hc_reviews');
+        console.warn('Failed to parse hc_reviews');
       }
     }
-    return [];
+    return INITIAL_REVIEWS;
   });
 
   const [mentorReviews, setMentorReviews] = useState<MentorReview[]>(() => {
@@ -146,12 +169,12 @@ export default function App() {
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
+        if (parsed && Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {
-        console.warn('Failed to parse ' + 'hc_mentor_reviews');
+        console.warn('Failed to parse hc_mentor_reviews');
       }
     }
-    return [];
+    return INITIAL_MENTOR_REVIEWS;
   });
 
   const [notifications, setNotifications] = useState<Notification[]>(() => {
@@ -159,12 +182,12 @@ export default function App() {
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
+        if (parsed && Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {
-        console.warn('Failed to parse ' + 'hc_notifications');
+        console.warn('Failed to parse hc_notifications');
       }
     }
-    return [];
+    return INITIAL_NOTIFICATIONS;
   });
 
   const [wishlistIds, setWishlistIds] = useState<string[]>(() => {
@@ -305,26 +328,30 @@ export default function App() {
       setMessagesMap(prev => ({ ...prev, [newConvId]: [initialMsg] }));
       setActiveConversationId(newConvId);
       
-      // Save to Supabase
-      supabase.from('conversations').insert({
-        id: newConv.id,
-        participant_ids: newConv.participantIds,
-        last_message: newConv.lastMessage,
-        last_message_timestamp: new Date().toISOString(),
-        unread_count: newConv.unreadCount,
-        related_item_id: newConv.relatedItemId,
-        related_item_title: newConv.relatedItemTitle
-      }).then(() => {
-        return supabase.from('chat_messages').insert({
-          id: initialMsg.id,
-          conversation_id: initialMsg.conversationId,
-          sender_id: initialMsg.senderId,
-          text: initialMsg.text,
-          timestamp: new Date().toISOString(),
-          item_id: initialMsg.itemId,
-          item_snapshot: initialMsg.itemSnapshot
-        });
-      }).catch(err => console.error("Error creating chat in Supabase:", err));
+      // Save to Supabase (with safe error handling)
+      try {
+        supabase.from('conversations').insert({
+          id: newConv.id,
+          participant_ids: newConv.participantIds,
+          last_message: newConv.lastMessage,
+          last_message_timestamp: new Date().toISOString(),
+          unread_count: newConv.unreadCount,
+          related_item_id: newConv.relatedItemId,
+          related_item_title: newConv.relatedItemTitle
+        }).then(() => {
+          supabase.from('chat_messages').insert({
+            id: initialMsg.id,
+            conversation_id: initialMsg.conversationId,
+            sender_id: initialMsg.senderId,
+            text: initialMsg.text,
+            timestamp: new Date().toISOString(),
+            item_id: initialMsg.itemId,
+            item_snapshot: initialMsg.itemSnapshot
+          }).then(() => {}, (err) => console.warn("Supabase message sync note:", err));
+        }, (err) => console.warn("Supabase conversation sync note:", err));
+      } catch (err) {
+        console.warn("Supabase chat sync error:", err);
+      }
 
     } else {
       setActiveConversationId(existing.id);
@@ -533,13 +560,19 @@ export default function App() {
       text,
       timestamp: 'Just now'
     };
-    supabase.from('chat_messages').insert({
-      id: newMsg.id,
-      conversation_id: newMsg.conversationId,
-      sender_id: newMsg.senderId,
-      text: newMsg.text,
-      timestamp: new Date().toISOString()
-    }).then(({error}) => { if(error) console.error("Error sending message to Supabase:", error); });
+    try {
+      supabase.from('chat_messages').insert({
+        id: newMsg.id,
+        conversation_id: newMsg.conversationId,
+        sender_id: newMsg.senderId,
+        text: newMsg.text,
+        timestamp: new Date().toISOString()
+      }).then(({error}) => { 
+        if(error) console.warn("Supabase message sync note:", error.message); 
+      }, (err) => console.warn("Supabase message sync note:", err));
+    } catch (err) {
+      console.warn("Supabase message sync error:", err);
+    }
     
 
     setMessagesMap(prev => ({
@@ -578,25 +611,29 @@ export default function App() {
         onRegister={async (newUser) => {
           setAllUsers(prev => [...prev, newUser]);
           setCurrentUser(newUser);
-          const { error } = await supabase.from('users').insert({
-            id: newUser.id,
-            name: newUser.name,
-            email: newUser.email,
-            avatar: newUser.avatar,
-            year: newUser.year,
-            role: newUser.role,
-            hostel_block: newUser.hostelBlock,
-            room_number: newUser.roomNumber,
-            department: newUser.department,
-            phone: newUser.phone,
-            bio: newUser.bio,
-            rating: newUser.rating,
-            review_count: newUser.reviewCount,
-            verified_student: newUser.verifiedStudent,
-            badges: newUser.badges,
-            password: newUser.password
-          });
-          if (error) console.error("Error inserting user:", error);
+          try {
+            const { error } = await supabase.from('users').insert({
+              id: newUser.id,
+              name: newUser.name,
+              email: newUser.email,
+              avatar: newUser.avatar,
+              year: newUser.year,
+              role: newUser.role,
+              hostel_block: newUser.hostelBlock,
+              room_number: newUser.roomNumber,
+              department: newUser.department,
+              phone: newUser.phone,
+              bio: newUser.bio,
+              rating: newUser.rating,
+              review_count: newUser.reviewCount,
+              verified_student: newUser.verifiedStudent,
+              badges: newUser.badges,
+              password: newUser.password
+            });
+            if (error) console.warn("Supabase user sync note:", error.message);
+          } catch (err) {
+            console.warn("Supabase user sync network note:", err);
+          }
         }}
       />
     );
