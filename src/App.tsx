@@ -60,8 +60,8 @@ export default function App() {
     }
     return SAMPLE_USERS;
   });
-    const [currentUser, setCurrentUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('hc_current_user_v2');
+      const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    const saved = sessionStorage.getItem('hc_current_user_v2');
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
@@ -72,7 +72,6 @@ export default function App() {
     }
     return null;
   });
-
   const [items, setItems] = useState<MarketplaceItem[]>(() => {
     const saved = localStorage.getItem('hc_items_v5');
     if (saved && saved !== 'undefined') {
