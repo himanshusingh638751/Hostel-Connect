@@ -68,18 +68,19 @@ export default function App() {
     if (saved && saved !== 'undefined') {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed) return parsed;
-      } catch (e) {
-        console.warn('Failed to parse ' + 'hc_questions');
-      }
-    }
-    return [];
-  });
-
-  const [answersMap, setAnswersMap] = useState<Record<string, ForumAnswer[]>>(() => {
-    const saved = localStorage.getItem('hc_answers');
+         const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    // sessionStorage use karein taki tab band karne par session reset ho aur Login page aaye
+    const saved = sessionStorage.getItem('hc_current_user_v2');
     if (saved && saved !== 'undefined') {
       try {
+        const parsed = JSON.parse(saved);
+        if (parsed) return parsed;
+      } catch (e) {
+        console.warn('Failed to parse hc_current_user_v2');
+      }
+    }
+    return null;
+  });
         const parsed = JSON.parse(saved);
         if (parsed) return parsed;
       } catch (e) {
@@ -223,7 +224,14 @@ export default function App() {
   };
 
   useEffect(() => { safeSetStorage('hc_users_v2', allUsers); }, [allUsers]);
-  useEffect(() => { safeSetStorage('hc_current_user_v2', currentUser); }, [currentUser]);
+    useEffect(() => {
+    if (currentUser) {
+      sessionStorage.setItem('hc_current_user_v2', JSON.stringify(currentUser));
+    } else {
+      sessionStorage.removeItem('hc_current_user_v2');
+      localStorage.removeItem('hc_current_user_v2'); // Purana stuck user clear karega
+    }
+  }, [currentUser]);
   useEffect(() => { safeSetStorage('hc_items_v5', items); }, [items]);
   useEffect(() => { safeSetStorage('hc_questions', questions); }, [questions]);
   useEffect(() => { safeSetStorage('hc_answers', answersMap); }, [answersMap]);
