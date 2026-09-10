@@ -60,7 +60,7 @@ export default function App() {
     }
     return SAMPLE_USERS;
   });
-  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    const [currentUser, setCurrentUser] = useState<User | null>(() => {
     const saved = localStorage.getItem('hc_current_user_v2');
     if (saved && saved !== 'undefined') {
       try {
