@@ -245,7 +245,14 @@ export default function App() {
   };
 
   useEffect(() => { safeSetStorage('hc_users_v2', allUsers); }, [allUsers]);
-  useEffect(() => { safeSetStorage('hc_current_user_v2', currentUser); }, [currentUser]);
+    useEffect(() => {
+    if (currentUser) {
+      sessionStorage.setItem('hc_current_user_v2', JSON.stringify(currentUser));
+    } else {
+      sessionStorage.removeItem('hc_current_user_v2');
+      localStorage.removeItem('hc_current_user_v2');
+    }
+  }, [currentUser]);
   useEffect(() => { safeSetStorage('hc_items_v5', items); }, [items]);
   useEffect(() => { safeSetStorage('hc_questions', questions); }, [questions]);
   useEffect(() => { safeSetStorage('hc_answers', answersMap); }, [answersMap]);
